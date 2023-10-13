@@ -4,73 +4,49 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dot.Net.WebApi.Domain;
 using Dot.Net.WebApi.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
- 
+using WebApi.Data;
+using WebApi.Domain.Interfaces;
+
 namespace Dot.Net.WebApi.Controllers
 {
     [Route("[controller]")]
     public class UserController : Controller
     {
-        private UserRepository _userRepository;
+        private readonly IUserService _userService;
 
-        public UserController(UserRepository userRepository)
+        public UserController(IUserService userService)
         {
-            _userRepository = userRepository;
+            _userService = userService;
+        }
+        [HttpPost("/rating/add")]
+        public async Task<IActionResult> CreateRating([FromBody] UserModel user)
+        {
+            UserModel users = await _userService.CreateUser(user);
+            return Ok(users);
         }
 
-        [HttpGet("/user/list")]
-        public IActionResult Home()
+        [HttpGet("/rating/{id}")]
+        public async Task<IActionResult> GetRating(int id)
         {
-            return View(_userRepository.FindAll());
+            UserModel users = await _userService.GetUser(id);
+            return Ok(users);
         }
 
-        [HttpGet("/user/add")]
-        public IActionResult AddUser([FromBody]User user)
+        [HttpPut("/rating/{id}")]
+        public async Task<IActionResult> UpdateRating([FromBody] UserModel rating)
         {
-            return View("user/add");
+            UserModel users = await _userService.UpdateUser(rating);
+            return Ok(users);
         }
 
-        [HttpGet("/user/validate")]
-        public IActionResult Validate([FromBody]User user)
+        [HttpDelete("/rating/{id}")]
+        public async Task<IActionResult> DeleteRating(int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return Redirect("user/add");
-            }
-           
-           _userRepository.Add(user);
-           
-            return Redirect("user/list");
-        }
-
-        [HttpGet("/user/update/{id}")]
-        public IActionResult ShowUpdateForm(int id)
-        {
-            User user = _userRepository.FindById(id);
-            
-            if (user == null)
-                throw new ArgumentException("Invalid user Id:" + id);
-            
-            return View("user/update");
-        }
-
-        [HttpPost("/user/update/{id}")]
-        public IActionResult updateUser(int id, [FromBody] User user)
-        {
-            // TODO: check required fields, if valid call service to update Trade and return Trade list
-            return Redirect("/trade/list");
-        }
-
-        [HttpDelete("/user/{id}")]
-        public IActionResult DeleteUser(int id)
-        {
-            User user = _userRepository.FindById(id);
-            
-            if (user == null)
-                throw new ArgumentException("Invalid user Id:" + id);
-                        
-            return Redirect("/user/list");
+            UserModel users = await _userService.DeleteUser(id);
+            return Ok(users);
         }
     }
 }

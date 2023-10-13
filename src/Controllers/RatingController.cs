@@ -3,56 +3,50 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Dot.Net.WebApi.Controllers.Domain;
+using Dot.Net.WebApi.Data;
 using Dot.Net.WebApi.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
- 
+using WebApi.Data;
+using WebApi.Domain.Interfaces;
+
 namespace Dot.Net.WebApi.Controllers
 {
     [Route("[controller]")]
     public class RatingController : Controller
     {
-        // TODO: Inject Rating service
+        private readonly IRatingService _ratingService;
 
-        [HttpGet("/rating/list")]
-        public IActionResult Home()
+        public RatingController(IRatingService ratingService)
         {
-            // TODO: find all Rating, add to model
-            return View("rating/list");
+            _ratingService = ratingService;
+        }
+        [HttpPost("/rating/add")]
+        public async Task<IActionResult> Create([FromBody] RatingModel rating)
+        {
+            RatingModel ratings = await _ratingService.CreateRating(rating);
+            return Ok(ratings);
         }
 
-        [HttpGet("/rating/add")]
-        public IActionResult AddRatingForm([FromBody]Rating rating)
+        [HttpGet("/rating/{id}")]
+        public async Task<IActionResult> GetRating(int id)
         {
-            return View("rating/add");
+            RatingModel ratings = await _ratingService.GetRating(id);
+            return Ok(ratings);
         }
 
-        [HttpGet("/rating/add")]
-        public IActionResult Validate([FromBody]Rating rating)
+        [HttpPut("/rating/{id}")]
+        public async Task<IActionResult> UpdateRating([FromBody] RatingModel rating)
         {
-            // TODO: check data valid and save to db, after saving return Rating list
-            return View("rating/add");
-        }
-
-        [HttpGet("/rating/update/{id}")]
-        public IActionResult ShowUpdateForm(int id)
-        {
-            // TODO: get Rating by Id and to model then show to the form
-            return View("rating/update");
-        }
-
-        [HttpPost("/rating/update/{id}")]
-        public IActionResult updateRating(int id, [FromBody] Rating rating)
-        {
-            // TODO: check required fields, if valid call service to update Rating and return Rating list
-            return Redirect("/rating/list");
+            RatingModel ratings = await _ratingService.UpdateRating(rating);
+            return Ok(ratings);
         }
 
         [HttpDelete("/rating/{id}")]
-        public IActionResult DeleteRating(int id)
+        public async Task<IActionResult> DeleteRating(int id)
         {
-            // TODO: Find Rating by Id and delete the Rating, return to Rating list
-            return Redirect("/rating/list");
+            RatingModel ratings = await _ratingService.DeleteRating(id);
+            return Ok(ratings);
         }
     }
 }

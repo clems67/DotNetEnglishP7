@@ -7,6 +7,6 @@ namespace Dot.Net.WebApi.Data
 {
     public class LocalDbContext : DbContext
     {
-        public DbSet<User> Users { get; set;}
+        public DbSet<UserService> Users { get; set;}
     }
 }

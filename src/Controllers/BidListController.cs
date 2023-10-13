@@ -3,44 +3,49 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Dot.Net.WebApi.Domain;
+using Dot.Net.WebApi.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
- 
+using WebApi.Data;
+using WebApi.Domain.Interfaces;
+
 namespace Dot.Net.WebApi.Controllers
 {
-    [Route("[controller]")]
     public class BidListController : Controller
     {
-        [HttpGet("/")]
-        public IActionResult Home()
+        private readonly IBidService _bidService;
+
+        public BidListController(IBidService bidService)
         {
-            return View("Home");
+            _bidService = bidService;
         }
 
-        [HttpGet("/bidList/validate")]
-        public IActionResult Validate([FromBody]BidList bidList)
+        [HttpPost("add")]
+        public async Task<IActionResult> CreateBid([FromBody]BidModel bid)
         {
-            // TODO: check data valid and save to db, after saving return bid list
-            return View("bidList/add");
+            BidModel bids = await _bidService.CreateBid(bid);
+            return Ok(bids);
         }
 
-        [HttpGet("/bidList/update/{id}")]
-        public IActionResult ShowUpdateForm(int id)
+        [HttpGet("/bidList/{id}")]
+        public async Task<IActionResult> GetBid(int id)
         {
-            return View("bidList/update");
+            BidModel bid = await _bidService.GetBid(id);
+            return Ok(bid);
         }
 
-        [HttpPost("/bidList/update/{id}")]
-        public IActionResult UpdateBid(int id, [FromBody] BidList bidList)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateBid([FromBody] BidModel bid)
         {
-            // TODO: check required fields, if valid call service to update Bid and return list Bid
-            return Redirect("/bidList/list");
+           BidModel bids = await(_bidService.UpdateBid(bid));
+            return Ok(bids);
         }
 
-        [HttpDelete("/bidList/{id}")]
-        public IActionResult DeleteBid(int id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteBid(int id)
         {
-            return Redirect("/bidList/list");
+            BidModel bids = await (_bidService.DeleteBid(id));
+            return Ok(bids);
         }
     }
 }

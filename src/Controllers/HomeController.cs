@@ -13,7 +13,7 @@ namespace Dot.Net.WebApi.Controllers
         [HttpGet("/")]
         public IActionResult Home()
         {
-            return View("Home");
+            return Ok();
         }
 
         [HttpGet("/Admin/Home")]

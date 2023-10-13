@@ -1,57 +1,51 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Dot.Net.WebApi.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
- 
+using WebApi.Data;
+using WebApi.Domain.Interfaces;
+
 namespace Dot.Net.WebApi.Controllers
 {
     [Route("[controller]")]
     public class TradeController : Controller
     {
-        // TODO: Inject Trade service
+        private readonly ITradeService _tradeService;
 
-        [HttpGet("/trade/list")]
-        public IActionResult Home()
+        public TradeController(ITradeService tradeService)
         {
-            // TODO: find all Trade, add to model
-            return View("trade/list");
+            _tradeService = tradeService;
+        }
+        [HttpPost("/rating/add")]
+        public async Task<IActionResult> CreateRating([FromBody] TradeModel trade)
+        {
+            TradeModel trades = await _tradeService.CreateTrade(trade);
+            return Ok(trades);
         }
 
-        [HttpGet("/trade/add")]
-        public IActionResult AddTrade([FromBody]Trade trade)
+        [HttpGet("/rating/{id}")]
+        public async Task<IActionResult> GetRating(int id)
         {
-            return View("trade/add");
+            TradeModel trades = await _tradeService.GetTrade(id);
+            return Ok(trades);
         }
 
-        [HttpGet("/trade/add")]
-        public IActionResult Validate([FromBody]Trade trade)
+        [HttpPut("/rating/{id}")]
+        public async Task<IActionResult> UpdateRating([FromBody] TradeModel rating)
         {
-            // TODO: check data valid and save to db, after saving return Trade list
-            return View("trade/add");
+            TradeModel trades = await _tradeService.UpdateTrade(rating);
+            return Ok(trades);
         }
 
-        [HttpGet("/trade/update/{id}")]
-        public IActionResult ShowUpdateForm(int id)
+        [HttpDelete("/rating/{id}")]
+        public async Task<IActionResult> DeleteRating(int id)
         {
-            // TODO: get Trade by Id and to model then show to the form
-            return View("trade/update");
-        }
-
-        [HttpPost("/trade/update/{id}")]
-        public IActionResult updateTrade(int id, [FromBody] Trade trade)
-        {
-            // TODO: check required fields, if valid call service to update Trade and return Trade list
-            return Redirect("/trade/list");
-        }
-
-        [HttpDelete("/trade/{id}")]
-        public IActionResult DeleteTrade(int id)
-        {
-            // TODO: Find Trade by Id and delete the Trade, return to Trade list
-            return Redirect("/trade/list");
+            TradeModel trades = await _tradeService.DeleteTrade(id);
+            return Ok(trades);
         }
     }
 }
