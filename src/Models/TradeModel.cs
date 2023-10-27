@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace WebApi.Data
+namespace WebApi.Models
 {
     public class TradeModel
     {
@@ -9,10 +9,10 @@ namespace WebApi.Data
         public int Id { get; set; }
         public string account { get; set; }
         public string type { get; set; }
-        public Double buyQuantity { get; set; }
-        public Double sellQuantity { get; set; }
-        public Double buyPrice { get; set; }
-        public Double sellPrice { get; set; }
+        public double buyQuantity { get; set; }
+        public double sellQuantity { get; set; }
+        public double buyPrice { get; set; }
+        public double sellPrice { get; set; }
         public string benchmark { get; set; }
         public DateTime tradeDate { get; set; }
         public string security { get; set; }

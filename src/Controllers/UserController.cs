@@ -7,8 +7,8 @@ using Dot.Net.WebApi.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using WebApi.Data;
 using WebApi.Domain.Interfaces;
+using WebApi.Models;
 
 namespace Dot.Net.WebApi.Controllers
 {

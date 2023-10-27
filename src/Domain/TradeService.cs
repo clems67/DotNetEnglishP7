@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
-using WebApi.Data;
 using WebApi.Domain.Interfaces;
+using WebApi.Models;
 
 namespace Dot.Net.WebApi.Domain
 {

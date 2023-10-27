@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using WebApi.Data;
+using WebApi.Models;
 
 namespace WebApi.Domain.Interfaces
 {

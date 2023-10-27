@@ -2,7 +2,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace WebApi.Data
+namespace WebApi.Models
 {
     public class CurvePointModel
     {

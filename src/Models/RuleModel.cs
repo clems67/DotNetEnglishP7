@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System;
 
-namespace WebApi.Data
+namespace WebApi.Models
 {
     public class RuleModel
     {
@@ -13,6 +13,6 @@ namespace WebApi.Data
         public string template { get; set; }
         public string sqlStr { get; set; }
 
-        public string sqlPart{ get; set; }
+        public string sqlPart { get; set; }
     }
 }
