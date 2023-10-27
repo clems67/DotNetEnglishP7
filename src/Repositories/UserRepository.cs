@@ -3,36 +3,32 @@ using System.Linq;
 using Dot.Net.WebApi.Domain;
 using System;
 using System.Collections.ObjectModel;
+using WebApi.Repositories.Interfaces;
+using System.Threading.Tasks;
+using WebApi.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Dot.Net.WebApi.Repositories
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
-        public LocalDbContext DbContext { get; }
+        private readonly IServiceScopeFactory _serviceScopeFactory;
 
-        public UserRepository(LocalDbContext dbContext)
+        public UserRepository(IServiceScopeFactory serviceScopeFactory)
         {
-            DbContext = dbContext;
+            _serviceScopeFactory = serviceScopeFactory;
         }
 
-        public User FindByUserName(string userName)
+
+        public async Task<UserModel> FindByUserName(int id)
         {
-            return DbContext.Users.Where(user => user.UserName == userName)
+            using (var scope = _serviceScopeFactory.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<LocalDbContext>();
+                return dbContext.Users.Where(user => user.Id == id)
                                   .FirstOrDefault();
-        }
-
-        public User[] FindAll()
-        {
-            return DbContext.Users.ToArray();
-        }
-
-        public void Add(User user)
-        {
-        }
-
-        public User FindById(int id)
-        {
-            return null;
+            }
         }
     }
 }
