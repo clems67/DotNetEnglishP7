@@ -19,10 +19,9 @@ namespace Dot.Net.WebApi.Controllers
         }
 
         [HttpPost("/rule/add")]
-        public async Task<IActionResult> CreateRule([FromBody] RuleModel rule)
+        public async Task CreateRule([FromBody] RuleModel rule)
         {
-            RuleModel rules = await _ruleService.CreateRule(rule);
-            return Ok(rules);
+            await _ruleService.CreateRule(rule);
         }
 
         [HttpGet("/ruleList/{id}")]
@@ -33,17 +32,15 @@ namespace Dot.Net.WebApi.Controllers
         }
 
         [HttpPut("/rule/{id}")]
-        public async Task<IActionResult> UpdateRule([FromBody] RuleModel rule)
+        public async Task UpdateRule([FromBody] RuleModel rule)
         {
-            RuleModel rules = await (_ruleService.UpdateRule(rule));
-            return Ok(rules);
+            await (_ruleService.UpdateRule(rule));
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRule(int id)
+        public async Task DeleteRule(int id)
         {
-            RuleModel rules = await (_ruleService.DeleteRule(id));
-            return Ok(rules);
+            await (_ruleService.DeleteRule(id));
         }
     }
 }

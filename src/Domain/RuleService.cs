@@ -1,26 +1,32 @@
 using System.Threading.Tasks;
 using WebApi.Domain.Interfaces;
 using WebApi.Models;
+using WebApi.Repositories.Interfaces;
 
 namespace Dot.Net.WebApi.Controllers
 {
     public class RuleService : IRuleService
     {
-        public async Task<RuleModel> CreateRule(RuleModel rule)
+        private readonly IRuleRepository _ruleRepository;
+        public RuleService(IRuleRepository ruleRepository)
         {
-            return new RuleModel();
+            _ruleRepository = ruleRepository;
+        }
+        public async Task CreateRule(RuleModel rule)
+        {
+            await _ruleRepository.CreateRule(rule);
         }
         public async Task<RuleModel> GetRule(int ruleId)
         {
-            return new RuleModel();
+            return await _ruleRepository.FindByRuleId(ruleId);
         }
-        public async Task<RuleModel> UpdateRule(RuleModel rule)
+        public async Task UpdateRule(RuleModel rule)
         {
-            return new RuleModel();
+            await _ruleRepository.UpdateRule(rule);
         }
-        public async Task<RuleModel> DeleteRule(int ruleId)
+        public async Task DeleteRule(int ruleId)
         {
-            return new RuleModel();
+            await _ruleRepository.DeleteRule(ruleId);
         }
     }
 }

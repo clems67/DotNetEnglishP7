@@ -44,8 +44,8 @@ namespace Dot.Net.WebApi
             services.AddSingleton<IBidService>(new BidService());
             services.AddSingleton<ICurvePointService>(new CurvePointService());
             services.AddSingleton<IRatingService>(new RatingService());
-            services.AddSingleton<IRuleService>(new RuleService());
-            services.AddSingleton<ITradeService>(new TradeService());
+            services.AddSingleton<IRuleService, RuleService>();
+            services.AddSingleton<ITradeService, TradeService>();
             services.AddSingleton<IUserService, UserService>();
         }
 
