@@ -21,10 +21,9 @@ namespace Dot.Net.WebApi.Controllers
             _curveService = curveService;
         }
         [HttpPost("/curvePoint/add")]
-        public async Task<IActionResult> CreateCurvePoint([FromBody]CurvePointModel curvePoint)
+        public async Task CreateCurvePoint([FromBody]CurvePointModel curvePoint)
         {
-            CurvePointModel curvePoints = await _curveService.CreateCurevePoint(curvePoint);
-            return Ok(curvePoints);
+            await _curveService.CreateCurevePoint(curvePoint);
         }
 
         [HttpGet("/curvePoint/{id}")]
@@ -35,17 +34,15 @@ namespace Dot.Net.WebApi.Controllers
         }
 
         [HttpPut("/curvePoint/{id}")]
-        public async Task<IActionResult> UpdateCurvePoint([FromBody] CurvePointModel curvePoint)
+        public async Task UpdateCurvePoint([FromBody] CurvePointModel curvePoint)
         {
-            CurvePointModel curvePoints = await _curveService.UpdateCurevePoint(curvePoint);
-            return Ok(curvePoints);
+            await _curveService.UpdateCurevePoint(curvePoint);
         }
 
         [HttpDelete("/curvePoint/{id}")]
-        public async Task<IActionResult> DeleteCurvePoint(int id)
+        public async Task DeleteCurvePoint(int id)
         {
-            CurvePointModel curvePoints = await _curveService.DeleteCurevePoint(id);
-            return Ok(curvePoints);
+            await _curveService.DeleteCurevePoint(id);
         }
     }
 }

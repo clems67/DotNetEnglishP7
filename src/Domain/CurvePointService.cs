@@ -1,29 +1,35 @@
 using System.Threading.Tasks;
 using WebApi.Domain.Interfaces;
 using WebApi.Models;
+using WebApi.Repositories.Interfaces;
 
 namespace Dot.Net.WebApi.Domain
 {
     public class CurvePointService : ICurvePointService
     {
-        public async Task<CurvePointModel> CreateCurevePoint(CurvePointModel curvePoint)
+        private readonly ICurvePointRepository _curvePointRepository;
+        public CurvePointService(ICurvePointRepository curvePointRepository)
         {
-            return new CurvePointModel();
+            _curvePointRepository = curvePointRepository;
         }
-
-        public async Task<CurvePointModel> DeleteCurevePoint(int curvePointId)
+        public async Task CreateCurevePoint(CurvePointModel curvePoint)
         {
-            return new CurvePointModel();
+            await _curvePointRepository.CreateCurvePoint(curvePoint);
         }
 
         public async Task<CurvePointModel> GetCurevePoint(int curvePointId)
         {
-            return new CurvePointModel();
+            return await _curvePointRepository.FindByCurvePointId(curvePointId);
         }
 
-        public async Task<CurvePointModel> UpdateCurevePoint(CurvePointModel bid)
+        public async Task UpdateCurevePoint(CurvePointModel curvePoint)
         {
-            return new CurvePointModel();
+            await _curvePointRepository.UpdateCurvePoint(curvePoint);
+        }
+
+        public async Task DeleteCurevePoint(int curvePointId)
+        {
+            await _curvePointRepository.DeleteCurvePoint(curvePointId);
         }
     }
 }
