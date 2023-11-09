@@ -1,12 +1,12 @@
 ﻿using System.Threading.Tasks;
 using WebApi.Models;
 
-namespace WebApi.Domain.Interfaces
+namespace WebApi.Repositories.Interfaces
 {
-    public interface IRatingService
+    public interface IRatingRepository
     {
         Task CreateRating(RatingModel rating);
-        Task<RatingModel> GetRating(int ratingId);
+        Task<RatingModel> FindByRatingId(int ratingId);
         Task UpdateRating(RatingModel rating);
         Task DeleteRating(int ratingId);
     }

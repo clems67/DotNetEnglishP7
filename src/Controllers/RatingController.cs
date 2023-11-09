@@ -22,10 +22,9 @@ namespace Dot.Net.WebApi.Controllers
             _ratingService = ratingService;
         }
         [HttpPost("/rating/add")]
-        public async Task<IActionResult> Create([FromBody] RatingModel rating)
+        public async Task Create([FromBody] RatingModel rating)
         {
-            RatingModel ratings = await _ratingService.CreateRating(rating);
-            return Ok(ratings);
+            await _ratingService.CreateRating(rating);
         }
 
         [HttpGet("/rating/{id}")]
@@ -36,17 +35,15 @@ namespace Dot.Net.WebApi.Controllers
         }
 
         [HttpPut("/rating/{id}")]
-        public async Task<IActionResult> UpdateRating([FromBody] RatingModel rating)
+        public async Task UpdateRating([FromBody] RatingModel rating)
         {
-            RatingModel ratings = await _ratingService.UpdateRating(rating);
-            return Ok(ratings);
+            await _ratingService.UpdateRating(rating);
         }
 
         [HttpDelete("/rating/{id}")]
-        public async Task<IActionResult> DeleteRating(int id)
+        public async Task DeleteRating(int id)
         {
-            RatingModel ratings = await _ratingService.DeleteRating(id);
-            return Ok(ratings);
+            await _ratingService.DeleteRating(id);
         }
     }
 }
