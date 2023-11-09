@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using WebApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Dot.Net.WebApi.Repositories
 {
@@ -20,14 +21,44 @@ namespace Dot.Net.WebApi.Repositories
             _serviceScopeFactory = serviceScopeFactory;
         }
 
+        public async Task CreateUser(UserModel user)
+        {
+            using (var scope = _serviceScopeFactory.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<LocalDbContext>();
+                dbContext.Users.Add(user);
+                await dbContext.SaveChangesAsync();
+            }
+        }
 
-        public async Task<UserModel> FindByUserName(int id)
+        public async Task<UserModel> FindByUserId(int id)
         {
             using (var scope = _serviceScopeFactory.CreateScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<LocalDbContext>();
                 return dbContext.Users.Where(user => user.Id == id)
                                   .FirstOrDefault();
+            }
+        }
+
+        public async Task UpdateUser(UserModel user)
+        {
+            using (var scope = _serviceScopeFactory.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<LocalDbContext>();
+                dbContext.Users.Update(user);
+                await dbContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task DeleteUser(int userId)
+        {
+            using (var scope = _serviceScopeFactory.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<LocalDbContext>();
+                UserModel user = dbContext.Users.Find(userId);
+                dbContext.Remove(user);
+                await dbContext.SaveChangesAsync();
             }
         }
     }

@@ -5,9 +5,9 @@ namespace WebApi.Domain.Interfaces
 {
     public interface IUserService
     {
-        Task<UserModel> CreateUser(UserModel user);
+        Task CreateUser(UserModel user);
         Task<UserModel> GetUser(int userId);
-        Task<UserModel> UpdateUser(UserModel user);
-        Task<UserModel> DeleteUser(int userId);
+        Task UpdateUser(UserModel user);
+        Task DeleteUser(int userId);
     }
 }

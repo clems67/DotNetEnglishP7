@@ -15,25 +15,25 @@ namespace Dot.Net.WebApi.Domain
             _userRepository = userRepository;
         }
 
-        public async Task<UserModel> CreateUser(UserModel user)
+        public async Task CreateUser(UserModel user)
         {
-            return new UserModel();
+            await _userRepository.CreateUser(user);
         }
 
-        public async Task<UserModel> DeleteUser(int userId)
+        public async Task DeleteUser(int userId)
         {
-            return new UserModel();
+            await _userRepository.DeleteUser(userId);
         }
 
         public async Task<UserModel> GetUser(int userId)
         {
 
-            return await _userRepository.FindByUserName(userId);
+            return await _userRepository.FindByUserId(userId);
         }
 
-        public async Task<UserModel> UpdateUser(UserModel user)
+        public async Task UpdateUser(UserModel user)
         {
-            return new UserModel();
+            await _userRepository.UpdateUser(user);
         }
     }
 }

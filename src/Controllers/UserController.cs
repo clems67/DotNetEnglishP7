@@ -21,32 +21,29 @@ namespace Dot.Net.WebApi.Controllers
         {
             _userService = userService;
         }
-        [HttpPost("/rating/add")]
-        public async Task<IActionResult> CreateRating([FromBody] UserModel user)
+        [HttpPost("/user/add")]
+        public async Task CreateUser([FromBody] UserModel user)
         {
-            UserModel users = await _userService.CreateUser(user);
-            return Ok(users);
+            await _userService.CreateUser(user);
         }
 
-        [HttpGet("/rating/{id}")]
-        public async Task<IActionResult> GetRating(int id)
+        [HttpGet("/user/{id}")]
+        public async Task<IActionResult> GetUser(int id)
         {
             UserModel users = await _userService.GetUser(id);
             return Ok(users);
         }
 
-        [HttpPut("/rating/{id}")]
-        public async Task<IActionResult> UpdateRating([FromBody] UserModel rating)
+        [HttpPut("/user/{id}")]
+        public async Task UpdateUser(UserModel user)
         {
-            UserModel users = await _userService.UpdateUser(rating);
-            return Ok(users);
+            await _userService.UpdateUser(user);
         }
 
-        [HttpDelete("/rating/{id}")]
-        public async Task<IActionResult> DeleteRating(int id)
+        [HttpDelete("/user/{id}")]
+        public async Task DeleteUser(int id)
         {
-            UserModel users = await _userService.DeleteUser(id);
-            return Ok(users);
+            await _userService.DeleteUser(id);
         }
     }
 }
