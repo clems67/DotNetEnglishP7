@@ -2,26 +2,32 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using WebApi.Domain.Interfaces;
 using WebApi.Models;
+using WebApi.Repositories.Interfaces;
 
 namespace Dot.Net.WebApi.Domain
 {
     public class BidService : IBidService
     {
-        public async Task<BidModel> CreateBid(BidModel bid)
+        private readonly IBidRepository _bidRepository;
+        public BidService(IBidRepository bidRepository)
         {
-            return new BidModel();
+            _bidRepository = bidRepository;
+        }
+        public async Task CreateBid(BidModel bid)
+        {
+            await _bidRepository.CreateBid(bid);
         }
         public async Task<BidModel> GetBid(int bidId)
         {
-            return new BidModel();
+            return await _bidRepository.FindByBidId(bidId);
         }
-        public async Task<BidModel> UpdateBid(BidModel bid)
+        public async Task UpdateBid(BidModel bid)
         {
-            return new BidModel();
+            await _bidRepository.CreateBid(bid);
         }
-        public async Task<BidModel> DeleteBid(int bidId)
+        public async Task DeleteBid(int bidId)
         {
-            return new BidModel();
+            await _bidRepository.DeleteBid(bidId);
         }
     }
 }

@@ -21,10 +21,9 @@ namespace Dot.Net.WebApi.Controllers
         }
 
         [HttpPost("add")]
-        public async Task<IActionResult> CreateBid([FromBody]BidModel bid)
+        public async Task CreateBid([FromBody]BidModel bid)
         {
-            BidModel bids = await _bidService.CreateBid(bid);
-            return Ok(bids);
+            await _bidService.CreateBid(bid);
         }
 
         [HttpGet("/bidList/{id}")]
@@ -35,17 +34,15 @@ namespace Dot.Net.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateBid([FromBody] BidModel bid)
+        public async Task UpdateBid([FromBody] BidModel bid)
         {
-           BidModel bids = await(_bidService.UpdateBid(bid));
-            return Ok(bids);
+            await(_bidService.UpdateBid(bid));
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBid(int id)
+        public async Task DeleteBid(int id)
         {
-            BidModel bids = await (_bidService.DeleteBid(id));
-            return Ok(bids);
+            await (_bidService.DeleteBid(id));
         }
     }
 }

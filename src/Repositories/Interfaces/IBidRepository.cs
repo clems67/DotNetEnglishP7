@@ -1,12 +1,12 @@
 ﻿using System.Threading.Tasks;
 using WebApi.Models;
 
-namespace WebApi.Domain.Interfaces
+namespace WebApi.Repositories.Interfaces
 {
-    public interface IBidService
+    public interface IBidRepository
     {
         Task CreateBid(BidModel bid);
-        Task<BidModel> GetBid(int bidId);
+        Task<BidModel> FindByBidId(int bidId);
         Task UpdateBid(BidModel bid);
         Task DeleteBid(int bidId);
     }

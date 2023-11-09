@@ -41,7 +41,7 @@ namespace Dot.Net.WebApi
             services.AddControllers();
             services.AddSingleton<IUserRepository, UserRepository>();
 
-            services.AddSingleton<IBidService>(new BidService());
+            services.AddSingleton<IBidService, BidService>();
             services.AddSingleton<ICurvePointService, CurvePointService>();
             services.AddSingleton<IRatingService, RatingService>();
             services.AddSingleton<IRuleService, RuleService>();
