@@ -1,65 +1,60 @@
-using Dot.Net.WebApi.Data;
+﻿using Dot.Net.WebApi.Data;
+using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
-using Dot.Net.WebApi.Domain;
-using System;
-using System.Collections.ObjectModel;
-using WebApi.Repositories.Interfaces;
 using System.Threading.Tasks;
 using WebApi.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Mvc;
+using WebApi.Repositories.Interfaces;
 
-namespace Dot.Net.WebApi.Repositories
+namespace WebApi.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class TradeRepository : ITradeRepository
     {
         private readonly IServiceScopeFactory _serviceScopeFactory;
 
-        public UserRepository(IServiceScopeFactory serviceScopeFactory)
+        public TradeRepository(IServiceScopeFactory serviceScopeFactory)
         {
             _serviceScopeFactory = serviceScopeFactory;
         }
-
-        public async Task CreateUser(UserModel user)
+        public async Task CreateTrade(TradeModel trade)
         {
             using (var scope = _serviceScopeFactory.CreateScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<LocalDbContext>();
-                dbContext.Users.Add(user);
+                dbContext.Trade.Add(trade);
                 await dbContext.SaveChangesAsync();
             }
         }
 
-        public async Task<UserModel> FindByUserId(int userId)
+        public async Task<TradeModel> FindByTradeId(int tradeId)
         {
             using (var scope = _serviceScopeFactory.CreateScope())
             {
-                var dbContext =  scope.ServiceProvider.GetRequiredService<LocalDbContext>();
-                return dbContext.Users.Where(user => user.Id == userId)
+                var dbContext = scope.ServiceProvider.GetRequiredService<LocalDbContext>();
+                return dbContext.Trade.Where(trade => trade.Id == tradeId)
                                   .FirstOrDefault();
             }
         }
 
-        public async Task UpdateUser(UserModel user)
+        public async Task UpdateTrade(TradeModel trade)
         {
             using (var scope = _serviceScopeFactory.CreateScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<LocalDbContext>();
-                dbContext.Users.Update(user);
+                dbContext.Trade.Update(trade);
                 await dbContext.SaveChangesAsync();
             }
         }
 
-        public async Task DeleteUser(int userId)
+        public async Task DeleteTrade(int tradeId)
         {
             using (var scope = _serviceScopeFactory.CreateScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<LocalDbContext>();
-                UserModel user = dbContext.Users.Find(userId);
-                dbContext.Remove(user);
+                TradeModel trade = dbContext.Trade.Find(tradeId);
+                dbContext.Remove(trade);
                 await dbContext.SaveChangesAsync();
             }
         }
+
     }
 }

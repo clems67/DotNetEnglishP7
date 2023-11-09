@@ -20,32 +20,30 @@ namespace Dot.Net.WebApi.Controllers
         {
             _tradeService = tradeService;
         }
-        [HttpPost("/rating/add")]
-        public async Task<IActionResult> CreateRating([FromBody] TradeModel trade)
+        [HttpPost("/trade/add")]
+        public async Task CreateRating([FromBody] TradeModel trade)
         {
-            TradeModel trades = await _tradeService.CreateTrade(trade);
-            return Ok(trades);
+            await _tradeService.CreateTrade(trade);
         }
 
-        [HttpGet("/rating/{id}")]
+        [HttpGet("/trade/{id}")]
         public async Task<IActionResult> GetRating(int id)
         {
             TradeModel trades = await _tradeService.GetTrade(id);
             return Ok(trades);
         }
 
-        [HttpPut("/rating/{id}")]
-        public async Task<IActionResult> UpdateRating([FromBody] TradeModel rating)
+        [HttpPut("/trade/{id}")]
+        public async Task UpdateRating([FromBody] TradeModel rating)
         {
-            TradeModel trades = await _tradeService.UpdateTrade(rating);
-            return Ok(trades);
+            await _tradeService.UpdateTrade(rating);
+
         }
 
-        [HttpDelete("/rating/{id}")]
-        public async Task<IActionResult> DeleteRating(int id)
+        [HttpDelete("/trade/{id}")]
+        public async Task DeleteRating(int id)
         {
-            TradeModel trades = await _tradeService.DeleteTrade(id);
-            return Ok(trades);
+            await _tradeService.DeleteTrade(id);
         }
     }
 }

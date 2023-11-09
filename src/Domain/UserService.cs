@@ -20,15 +20,15 @@ namespace Dot.Net.WebApi.Domain
             await _userRepository.CreateUser(user);
         }
 
-        public async Task DeleteUser(int userId)
-        {
-            await _userRepository.DeleteUser(userId);
-        }
-
         public async Task<UserModel> GetUser(int userId)
         {
 
             return await _userRepository.FindByUserId(userId);
+        }
+
+        public async Task DeleteUser(int userId)
+        {
+            await _userRepository.DeleteUser(userId);
         }
 
         public async Task UpdateUser(UserModel user)

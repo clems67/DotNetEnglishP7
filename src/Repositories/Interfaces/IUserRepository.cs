@@ -5,8 +5,8 @@ namespace WebApi.Repositories.Interfaces
 {
     public interface IUserRepository
     {
-        Task<UserModel> FindByUserId(int id);
         Task CreateUser(UserModel user);
+        Task<UserModel> FindByUserId(int userId);
         Task UpdateUser(UserModel user);
         Task DeleteUser(int userId);
     }

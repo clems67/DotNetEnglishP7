@@ -1,12 +1,12 @@
 ﻿using System.Threading.Tasks;
 using WebApi.Models;
 
-namespace WebApi.Domain.Interfaces
+namespace WebApi.Repositories.Interfaces
 {
-    public interface ITradeService
+    public interface ITradeRepository
     {
         Task CreateTrade(TradeModel trade);
-        Task<TradeModel> GetTrade(int tradeId);
+        Task<TradeModel> FindByTradeId(int tradeId);
         Task UpdateTrade(TradeModel trade);
         Task DeleteTrade(int tradeId);
     }
