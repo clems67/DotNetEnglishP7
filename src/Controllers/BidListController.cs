@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WebApi.Domain.Interfaces;
 using WebApi.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Dot.Net.WebApi.Controllers
 {
@@ -20,12 +21,14 @@ namespace Dot.Net.WebApi.Controllers
             _bidService = bidService;
         }
 
+        [Authorize]
         [HttpPost("add")]
         public async Task CreateBid([FromBody]BidModel bid)
         {
             await _bidService.CreateBid(bid);
         }
 
+        [Authorize]
         [HttpGet("/bidList/{id}")]
         public async Task<IActionResult> GetBid(int id)
         {
@@ -33,12 +36,14 @@ namespace Dot.Net.WebApi.Controllers
             return Ok(bid);
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task UpdateBid([FromBody] BidModel bid)
         {
             await(_bidService.UpdateBid(bid));
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task DeleteBid(int id)
         {

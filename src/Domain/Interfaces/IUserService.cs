@@ -9,5 +9,6 @@ namespace WebApi.Domain.Interfaces
         Task<UserModel> GetUser(int userId);
         Task UpdateUser(UserModel user);
         Task DeleteUser(int userId);
+        Task<string> Login(string username, string password);
     }
 }

@@ -2,62 +2,36 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Dot.Net.WebApi.Data;
 using Dot.Net.WebApi.Domain;
 using Dot.Net.WebApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
- 
+using WebApi.Domain.Interfaces;
+using WebApi.Models;
+
 namespace Dot.Net.WebApi.Controllers
 {
     [Route("[controller]")]
     public class LoginController : Controller
     {
-        private UserRepository _userRepository;
+        private IUserService _userService;
 
-        public LoginController(UserRepository userRepository)
+        public LoginController(IUserService userService)
         {
-            this._userRepository = userRepository;
+            _userService = userService;
         }
 
         [HttpGet("/login")]
-        public IActionResult Login()
+        public IActionResult Login(UserModel user)
         {
-            return View("login");
-        }
-
-        [HttpGet("/secure/article-details")]
-        public IActionResult GetAllUserArticles()
-        {
-            return View();
-        }
-
-        [HttpGet("/error")]
-        public IActionResult Error()
-        {
-            string errorMessage= "You are not authorized for the requested data.";
-            
-            return View(new UnauthorizedObjectResult(errorMessage));
-        }
-
-        [HttpGet("/trade/update/{id}")]
-        public IActionResult ShowUpdateForm(int id)
-        {
-            // TODO: get Trade by Id and to model then show to the form
-            return View("trade/update");
-        }
-
-        [HttpPost("/trade/update/{id}")]
-        public IActionResult updateTrade(int id, [FromBody] TradeService rating)
-        {
-            // TODO: check required fields, if valid call service to update Trade and return Trade list
-            return Redirect("/trade/list");
-        }
-
-        [HttpDelete("/trade/{id}")]
-        public IActionResult DeleteTrade(int id)
-        {
-            // TODO: Find Trade by Id and delete the Trade, return to Trade list
-            return Redirect("/trade/list");
+            var token = _userService.Login(user.userName, user.password).Result;
+            if (token == null || token == string.Empty)
+            {
+                return BadRequest(new { message = "UserName or Password is incorrect" });
+            }
+            return Ok(token);
         }
     }
 }

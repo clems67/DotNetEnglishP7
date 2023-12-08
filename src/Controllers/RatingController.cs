@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Domain.Interfaces;
 using WebApi.Models;
@@ -14,12 +15,15 @@ namespace Dot.Net.WebApi.Controllers
         {
             _ratingService = ratingService;
         }
+
+        [Authorize]
         [HttpPost("/rating/add")]
         public async Task Create([FromBody] RatingModel rating)
         {
             await _ratingService.CreateRating(rating);
         }
 
+        [Authorize]
         [HttpGet("/rating/{id}")]
         public async Task<IActionResult> GetRating(int id)
         {
@@ -27,12 +31,14 @@ namespace Dot.Net.WebApi.Controllers
             return Ok(ratings);
         }
 
+        [Authorize]
         [HttpPut("/rating/{id}")]
         public async Task UpdateRating([FromBody] RatingModel rating)
         {
             await _ratingService.UpdateRating(rating);
         }
 
+        [Authorize]
         [HttpDelete("/rating/{id}")]
         public async Task DeleteRating(int id)
         {

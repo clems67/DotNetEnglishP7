@@ -41,6 +41,17 @@ namespace Dot.Net.WebApi.Repositories
             }
         }
 
+        public async Task<UserModel> FindByUserNameAndPassword(string userName, string passWord)
+        {
+            using (var scope = _serviceScopeFactory.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<LocalDbContext>();
+                return dbContext.Users.Where(user => user.userName == userName)
+                    .Where(user => user.password == passWord)
+                                  .FirstOrDefault();
+            }
+        }
+
         public async Task UpdateUser(UserModel user)
         {
             using (var scope = _serviceScopeFactory.CreateScope())

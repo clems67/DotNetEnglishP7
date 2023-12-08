@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Dot.Net.WebApi.Controllers;
 using Dot.Net.WebApi.Data;
 using Dot.Net.WebApi.Domain;
 using Dot.Net.WebApi.Repositories;
+using Humanizer.Configuration;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -15,8 +18,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using WebApi.Domain;
 using WebApi.Domain.Interfaces;
+using WebApi.Repositories;
 using WebApi.Repositories.Interfaces;
 
 namespace Dot.Net.WebApi
@@ -39,6 +44,11 @@ namespace Dot.Net.WebApi
 
 
             services.AddControllers();
+            services.AddSingleton<IBidRepository, BidRepository>();
+            services.AddSingleton<ICurvePointRepository, CurvePointRepository>();
+            services.AddSingleton<IRatingRepository, RatingRepository>();
+            services.AddSingleton<IRuleRepository, RuleRepository>();
+            services.AddSingleton<ITradeRepository, TradeRepository>();
             services.AddSingleton<IUserRepository, UserRepository>();
 
             services.AddSingleton<IBidService, BidService>();
@@ -47,6 +57,22 @@ namespace Dot.Net.WebApi
             services.AddSingleton<IRuleService, RuleService>();
             services.AddSingleton<ITradeService, TradeService>();
             services.AddSingleton<IUserService, UserService>();
+            //services.AddSingleton<IConfiguration>(Configuration);
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = Configuration["Jwt:Audience"],
+                        ValidAudience = Configuration["Jwt:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                    };
+                });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +84,8 @@ namespace Dot.Net.WebApi
             }
 
             app.UseHttpsRedirection();
+
+            app.UseAuthentication();
 
             app.UseRouting();
 
