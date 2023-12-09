@@ -57,7 +57,9 @@ namespace Dot.Net.WebApi
             services.AddSingleton<IRuleService, RuleService>();
             services.AddSingleton<ITradeService, TradeService>();
             services.AddSingleton<IUserService, UserService>();
+            
             //services.AddSingleton<IConfiguration>(Configuration);
+            
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using WebApi.Models;
 
 namespace WebApi.Domain.Interfaces
@@ -10,5 +11,6 @@ namespace WebApi.Domain.Interfaces
         Task UpdateUser(UserModel user);
         Task DeleteUser(int userId);
         Task<string> Login(string username, string password);
+        Task SignIn(string username, string password);
     }
 }

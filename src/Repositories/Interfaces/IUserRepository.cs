@@ -7,7 +7,7 @@ namespace WebApi.Repositories.Interfaces
     {
         Task CreateUser(UserModel user);
         Task<UserModel> FindByUserId(int userId);
-        Task<UserModel> FindByUserNameAndPassword(string userName, string passWord);
+        Task<UserModel> FindByUserName(string userName);
         Task UpdateUser(UserModel user);
         Task DeleteUser(int userId);
     }

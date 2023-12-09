@@ -35,19 +35,18 @@ namespace Dot.Net.WebApi.Repositories
         {
             using (var scope = _serviceScopeFactory.CreateScope())
             {
-                var dbContext =  scope.ServiceProvider.GetRequiredService<LocalDbContext>();
+                var dbContext = scope.ServiceProvider.GetRequiredService<LocalDbContext>();
                 return dbContext.Users.Where(user => user.Id == userId)
                                   .FirstOrDefault();
             }
         }
 
-        public async Task<UserModel> FindByUserNameAndPassword(string userName, string passWord)
+        public async Task<UserModel> FindByUserName(string userName)
         {
             using (var scope = _serviceScopeFactory.CreateScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<LocalDbContext>();
                 return dbContext.Users.Where(user => user.userName == userName)
-                    .Where(user => user.password == passWord)
                                   .FirstOrDefault();
             }
         }

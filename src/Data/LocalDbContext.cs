@@ -12,6 +12,14 @@ namespace Dot.Net.WebApi.Data
          : base(options)
         {
         }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<UserModel>()
+                .HasIndex(u => u.userName)
+                .IsUnique();
+        }
+
         public LocalDbContext() : base() { }
         public DbSet<BidModel> Bid { get; set; }
         public DbSet<CurvePointModel> CurvePoint { get; set; }

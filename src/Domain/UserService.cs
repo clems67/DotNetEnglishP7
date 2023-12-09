@@ -9,6 +9,14 @@ using WebApi.Domain.Interfaces;
 using WebApi.Models;
 using WebApi.Repositories.Interfaces;
 using Microsoft.Extensions.Configuration;
+using System.Security.Cryptography;
+using System.Drawing;
+using System.ComponentModel;
+using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.Extensions.Logging;
 
 namespace Dot.Net.WebApi.Domain
 {
@@ -44,13 +52,61 @@ namespace Dot.Net.WebApi.Domain
             await _userRepository.UpdateUser(user);
         }
 
+        public async Task SignIn(string username, string password)
+        {
+            // check if username is already in database
+            var LoginUser = await _userRepository.FindByUserName(username);
+
+            if (LoginUser != null)
+            {
+                throw new Exception("Username already exists.");
+            }
+
+            // Generate a random salt
+            byte[] salt = new byte[32];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(salt);
+            }
+            // Hash the password with the salt
+            byte[] saltedPassword = Encoding.UTF8.GetBytes(password + Encoding.UTF8.GetString(salt));
+            byte[] hashedPassword;
+            using (var sha256 = SHA256.Create())
+            {
+                hashedPassword = sha256.ComputeHash(saltedPassword);
+            }
+            UserModel user = new UserModel()
+            {
+                userName = username,
+                hashedPassword = hashedPassword,
+                salt = salt
+            };
+
+            await _userRepository.CreateUser(user);
+        }
+
         public async Task<string> Login(string username, string password)
         {
-            var LoginUser = _userRepository.FindByUserNameAndPassword(username, password);
+            // check if username is in database
+            var LoginUser = await _userRepository.FindByUserName(username);
 
-            if (LoginUser.Result == null)
+            if (LoginUser == null)
             {
-                return string.Empty;
+                return null;
+            }
+
+            // Hash the salted password
+            byte[] saltedPassword = Encoding.UTF8.GetBytes(password + Encoding.UTF8.GetString(LoginUser.salt));
+            byte[] hashedSaltedPassword;
+            using (var sha256 = SHA256.Create())
+            {
+                hashedSaltedPassword = sha256.ComputeHash(saltedPassword);
+            }
+
+            // Compare the hashed salted password with the stored hashed password
+            if (!hashedSaltedPassword.SequenceEqual(LoginUser.hashedPassword))
+            {
+                return null;
             }
 
             var tokenHandler = new JwtSecurityTokenHandler();

@@ -6,6 +6,7 @@ using Dot.Net.WebApi.Data;
 using Dot.Net.WebApi.Domain;
 using Dot.Net.WebApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using WebApi.Domain.Interfaces;
@@ -16,7 +17,7 @@ namespace Dot.Net.WebApi.Controllers
     [Route("[controller]")]
     public class LoginController : Controller
     {
-        private IUserService _userService;
+        private readonly IUserService _userService;
 
         public LoginController(IUserService userService)
         {
@@ -24,14 +25,30 @@ namespace Dot.Net.WebApi.Controllers
         }
 
         [HttpGet("/login")]
-        public IActionResult Login(UserModel user)
+        public async Task<IActionResult> Login(string userName, string password)
         {
-            var token = _userService.Login(user.userName, user.password).Result;
+            var token = _userService.Login(userName, password).Result;
             if (token == null || token == string.Empty)
             {
                 return BadRequest(new { message = "UserName or Password is incorrect" });
             }
             return Ok(token);
+        }
+
+        [HttpPost("/signin")]
+        public async Task<IActionResult> SignIn(string userName, string password)
+        {
+            try
+            {
+                await _userService.SignIn(userName, password);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            
         }
     }
 }
