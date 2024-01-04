@@ -35,12 +35,12 @@ namespace Dot.Net.WebApi.Controllers
             return Ok(token);
         }
 
-        [HttpPost("/signin")]
-        public async Task<IActionResult> SignIn(string userName, string password)
+        [HttpPost("/signup")]
+        public async Task<IActionResult> SignUp(string userName, string password)
         {
             try
             {
-                await _userService.SignIn(userName, password);
+                await _userService.SignUp(userName, password);
                 return Ok();
             }
             catch (Exception ex)

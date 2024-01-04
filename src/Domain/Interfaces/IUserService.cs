@@ -11,6 +11,6 @@ namespace WebApi.Domain.Interfaces
         Task UpdateUser(UserModel user);
         Task DeleteUser(int userId);
         Task<string> Login(string username, string password);
-        Task SignIn(string username, string password);
+        Task SignUp(string username, string password);
     }
 }

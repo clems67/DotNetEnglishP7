@@ -17,6 +17,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Extensions.Logging;
+using System.Text.RegularExpressions;
 
 namespace Dot.Net.WebApi.Domain
 {
@@ -52,7 +53,7 @@ namespace Dot.Net.WebApi.Domain
             await _userRepository.UpdateUser(user);
         }
 
-        public async Task SignIn(string username, string password)
+        public async Task SignUp(string username, string password)
         {
             // check if username is already in database
             var LoginUser = await _userRepository.FindByUserName(username);
@@ -60,6 +61,12 @@ namespace Dot.Net.WebApi.Domain
             if (LoginUser != null)
             {
                 throw new Exception("Username already exists.");
+            }
+
+            //check regex Password
+            if (!Regex.IsMatch(password, @"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"))
+            {
+                throw new Exception("Password must be minimum eight characters, at least one letter, one number and one special character");
             }
 
             // Generate a random salt
