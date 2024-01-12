@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Serilog;
 using WebApi.Domain.Interfaces;
 using WebApi.Models;
 
@@ -38,17 +39,8 @@ namespace Dot.Net.WebApi.Controllers
         [HttpPost("/signup")]
         public async Task<IActionResult> SignUp(string userName, string password)
         {
-            try
-            {
                 await _userService.SignUp(userName, password);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-
-            
+                return Ok();            
         }
     }
 }

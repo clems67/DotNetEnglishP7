@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +20,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
+using WebApi;
 using WebApi.Domain;
 using WebApi.Domain.Interfaces;
 using WebApi.Repositories;
@@ -42,6 +45,20 @@ namespace Dot.Net.WebApi
             services.AddDbContext<LocalDbContext>(
                 options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddLogging(builder =>
+            {
+                var logger = new LoggerConfiguration()
+                            .MinimumLevel.Debug()
+                            .WriteTo.Debug()
+                            .CreateLogger();
+
+                builder.AddSerilog(logger);
+            });
+
+            services.AddControllers(options =>
+            {
+                options.Filters.Add<CustomExceptionFilter>();
+            });
 
             services.AddControllers();
             services.AddSingleton<IBidRepository, BidRepository>();
@@ -57,9 +74,13 @@ namespace Dot.Net.WebApi
             services.AddSingleton<IRuleService, RuleService>();
             services.AddSingleton<ITradeService, TradeService>();
             services.AddSingleton<IUserService, UserService>();
-            
+
             //services.AddSingleton<IConfiguration>(Configuration);
-            
+
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Debug()
+                .CreateLogger();
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {

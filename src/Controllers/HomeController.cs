@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
- 
+using Serilog;
+
 namespace Dot.Net.WebApi.Controllers
 {
     [Route("[controller]")]
@@ -17,6 +18,11 @@ namespace Dot.Net.WebApi.Controllers
         public IActionResult Home()
         {
             return Ok();
+        }
+        [HttpGet("/error")]
+        public IActionResult Error()
+        {
+            throw new NotImplementedException();
         }
     }
 }

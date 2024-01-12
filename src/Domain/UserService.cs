@@ -60,13 +60,13 @@ namespace Dot.Net.WebApi.Domain
 
             if (LoginUser != null)
             {
-                throw new Exception("Username already exists.");
+                throw new ArgumentException("Username already exists.");
             }
 
             //check regex Password
             if (!Regex.IsMatch(password, @"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"))
             {
-                throw new Exception("Password must be minimum eight characters, at least one letter, one number and one special character");
+                throw new ArgumentException("Password must be minimum eight characters, at least one letter, one number and one special character");
             }
 
             // Generate a random salt
