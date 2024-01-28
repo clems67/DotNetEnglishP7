@@ -5,9 +5,9 @@ namespace WebApi.Domain.Interfaces
 {
     public interface ICurvePointService
     {
-        Task CreateCurevePoint(CurvePointModel curvePoint);
-        Task<CurvePointModel> GetCurevePoint(int curvePointId);
-        Task UpdateCurevePoint(CurvePointModel curvePoint);
-        Task DeleteCurevePoint(int curvePointId);
+        Task CreateCurvePoint(CurvePointModel curvePoint);
+        Task<CurvePointModel> GetCurvePoint(int curvePointId);
+        Task UpdateCurvePoint(CurvePointModel curvePoint);
+        Task DeleteCurvePoint(int curvePointId);
     }
 }

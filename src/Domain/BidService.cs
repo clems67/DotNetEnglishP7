@@ -23,7 +23,7 @@ namespace Dot.Net.WebApi.Domain
         }
         public async Task UpdateBid(BidModel bid)
         {
-            await _bidRepository.CreateBid(bid);
+            await _bidRepository.UpdateBid(bid);
         }
         public async Task DeleteBid(int bidId)
         {

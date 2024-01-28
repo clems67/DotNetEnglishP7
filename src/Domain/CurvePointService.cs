@@ -12,22 +12,22 @@ namespace Dot.Net.WebApi.Domain
         {
             _curvePointRepository = curvePointRepository;
         }
-        public async Task CreateCurevePoint(CurvePointModel curvePoint)
+        public async Task CreateCurvePoint(CurvePointModel curvePoint)
         {
             await _curvePointRepository.CreateCurvePoint(curvePoint);
         }
 
-        public async Task<CurvePointModel> GetCurevePoint(int curvePointId)
+        public async Task<CurvePointModel> GetCurvePoint(int curvePointId)
         {
             return await _curvePointRepository.FindByCurvePointId(curvePointId);
         }
 
-        public async Task UpdateCurevePoint(CurvePointModel curvePoint)
+        public async Task UpdateCurvePoint(CurvePointModel curvePoint)
         {
             await _curvePointRepository.UpdateCurvePoint(curvePoint);
         }
 
-        public async Task DeleteCurevePoint(int curvePointId)
+        public async Task DeleteCurvePoint(int curvePointId)
         {
             await _curvePointRepository.DeleteCurvePoint(curvePointId);
         }
